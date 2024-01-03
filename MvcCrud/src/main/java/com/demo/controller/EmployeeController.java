@@ -1,5 +1,7 @@
 package com.demo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.demo.model.Employee;
 import com.demo.service.EmployeeServices;
+import com.demo.validator.EmployeeValidator;
 
 @Controller
 @RequestMapping
@@ -29,34 +32,21 @@ public class EmployeeController {
 	
 	// Save Employee
 	@PostMapping("/insertEmployee")
-    public ResponseEntity<String> insertEmployee(@ModelAttribute("insertEmployee") Employee emp) {
-        // Perform server-side validation
-        if (!isValidEmployee(emp)) {
-            return ResponseEntity.badRequest().body("Invalid employee data");
-        }
-        
-        // Validation passed, save the employee
-        employeeService.addEmp(emp);
-        
-        return ResponseEntity.ok("Employee added successfully");
-    }
+	public String insertEmployee(@ModelAttribute("insertEmployee") Employee emp, Model model) {
+	    List<String> missingFields = EmployeeValidator.getMissingFields(emp);
 
-    // Server-side validation logic
-    private boolean isValidEmployee(Employee emp) {
-        // Implement your validation logic here
-        return isValidName(emp.getName()) && isValidEmail(emp.getEmail());
-    }
+	    if (!missingFields.isEmpty()) {
+	        model.addAttribute("missingFields", missingFields);
+	        return "AddEmployee"; // Redirect back to the AddEmployee page
+	    }
 
-    private boolean isValidName(String name) {
-        // Example: Name should not be empty
-        return name != null && !name.trim().isEmpty();
-    }
+	    // Validation passed, save the employee
+	    employeeService.addEmp(emp);
 
-    private boolean isValidEmail(String email) {
-        // Example: Check for a valid email format
-        return email != null && email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
-    }
-	
+	    return "redirect:/employeeReport"; // Redirect on successful addition
+	}
+
+    
 	//load employee Data
 	//	passing data thats why use model
 	

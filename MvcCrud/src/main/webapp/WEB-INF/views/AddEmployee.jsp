@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<%@ page import="java.util.List" %>
 <%@include file="./base.jsp"%>
 </head>
 <body>
@@ -13,6 +14,18 @@
 
 		<h1>Add Employee Form</h1>
 		<form action="insertEmployee" method="post">
+		
+		 <% if (request.getAttribute("missingFields") instanceof List) { %>
+		    <div class="alert alert-danger">
+		        Please fill in the following fields:
+		        <ul>
+		            <% for (String field : (List<String>) request.getAttribute("missingFields")) { %>
+		                <li><%= field %></li>
+		            <% } %>
+		        </ul>
+		    </div>
+		<% } %>
+
 
 			<div class="row">
 				<div class="col">
@@ -68,7 +81,7 @@
 				<div class="col">
 				    <div class="form-group">
 				        <label for="mobile">Mobile</label>
-				        <input type="tel" class="form-control" id="mobile" name="mobile" placeholder="Enter Mobile No." pattern="[0-9]{10}" title="Please enter a 10-digit number">
+				        <input type="tel" class="form-control" id="mobile" name="mobile" placeholder="Enter Mobile No.">
 				    </div>
 				</div>
 			</div>

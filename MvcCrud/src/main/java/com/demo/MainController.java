@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class MainController {
 	
-	@RequestMapping("/redirect")
-	public String viewHome() {
+	@RequestMapping("/Register")
+	public String viewRegister() {
 		System.out.print("Fegrgwgwsgvwsg_________");
 		
-		return "/home";
+		return "AddEmployee";
 	}
 
 }

@@ -2,5 +2,5 @@
 <body>
 <h2>Hello World!</h2>
 </body>
-<a href ="redirect">wfwetwet</a>
+<a href ="Register">Register page</a>
 </html>
